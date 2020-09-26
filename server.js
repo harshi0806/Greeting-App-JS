@@ -12,7 +12,7 @@ greetingApp.use(bodyParser.json())
 
 // define a simple route
 greetingApp.get('/', (req, res) => {
-    res.json({"message": "Welcome to EasyNotes application. Take notes quickly. Organize and keep track of all your notes."});
+    res.json({"message": "Welcome to the Greetings App application!"});
 });
 
 // listen for requests
