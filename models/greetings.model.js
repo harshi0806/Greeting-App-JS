@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const GreetingSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
-    message: String
+    greeting: String
 }, {
     timestamps: true
 });
