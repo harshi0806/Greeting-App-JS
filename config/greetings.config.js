@@ -3,7 +3,7 @@ MongoClient.Promise = global.Promise;
 require('dotenv').config();
 
 // Connection URL and database
-const url = 'mongodb://localhost:127.0.0.1:27017';
+const url = 'mongodb://localhost:27017/test';
 const dbName = 'greetings-app';
 let db
 
@@ -18,4 +18,8 @@ MongoClient.connect(process.env.url, { useNewUrlParser: true}, function(err, cli
     client.close();
 });
 
-module.exports = MongoClient;
+module.exports = {
+    MongoClient,
+    MONGO_URL: url,
+    MONGO_DB: MongoClient.db
+}
