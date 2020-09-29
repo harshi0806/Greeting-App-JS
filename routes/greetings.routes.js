@@ -1,19 +1,22 @@
 const express = require('express')
 const router = express.Router()
- 
+
 //import controller
 const greetingController = require('../controllers/greetings.controller.js')
+
+//Create a new Greeting
+router.post('/greetings', greetingController.create)
  
-//get all the list of greetings
-router.get('/', greetingController.get_user)
+//Retrieve all Greetings
+router.get('/greetings', greetingController.findAll)
  
-//create a greeting
-router.post('/user', greetingController.create_user)
- 
-//update greeting
-router.put('/update/:id', greetingController.update_user)
- 
-//delete greeting
-router.delete('/delete/:id', greetingController.delete_user)
- 
+// Retrieve a single Greeting with greetingId
+router.get('/greetings/:greetingId', greetingController.findOne);
+
+// Update a Greeting with greetingId
+router.put('/greetings/:greetingId', greetingController.update);
+
+// Delete a Greeting with greetingId
+router.delete('/greetings/:greetingId', greetingController.delete);
+
 module.exports = router
