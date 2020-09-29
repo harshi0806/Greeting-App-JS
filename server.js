@@ -1,52 +1,46 @@
 const express = require('express');
-var router = express.Router();
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const { MONGO_URL } = require('./config/greetings.config.js');
-require('dotenv/config');
+// const cors = require('cors');
 
-// create express app
+// create app using express framework
 const app = express();
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 
-//Enable Cors for all HTTP methods
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 
-const PORT = require('./config/greetings.config.js').MONGO_URL;
-const db = require('./config/greetings.config.js').MONGO_DB;
-const port = process.env.PORT || 3000;
-
-// listen for requests
-mongoose.connect(PORT, {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => {
-        console.log('DB Connected')
-        app.listen(config.port, () => {
-            console.log(`Server is listening on port {$port}...`);
-    })
-})
-.catch(err => console.log(err));
-
 // define a simple route
 app.get('/', (req, res) => {
-    res.json({"message": "Welcome to the Greetings App application!"});
+    res.json({"message": "Welcome to Greetings App."});
 });
 
-//import routes
-const config = require('./config/greetings.config.js');
-const greetingRoutes = require('./routes/greetings.routes.js');
+//Require greeting routes
+require('./routes/greetings.routes.js')(app);
 
-//Use routes
-app.use('/greetings', greetingRoutes)
-app.use(app.router)
-greetingRoutes.initialize(app);
+//Enable Cors for all HTTP methods
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     next();
+//   });
+
+// Configuring the database
+const db = require('./config/greetings.config.js').url;
+const mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
+
+// Connecting to the database
+mongoose.connect(db, {
+    useNewUrlParser: true
+}).then(() => {
+    console.log("Successfully connected to the database");    
+}).catch(err => {
+    console.log('Could not connect to the database. Exiting now...', err);
+    process.exit();
+});
+
+//Listen for requests
+app.listen(3000, () => { console.log('Server is running at port 3000...') });
