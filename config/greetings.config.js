@@ -1,11 +1,11 @@
 const MongoClient = require('mongodb').MongoClient;
 MongoClient.Promise = global.Promise;
-require('dotenv').config();
+require('dotenv/config');
 
 // Connection URL and database
 const url = 'mongodb://localhost:27017/test';
 const dbName = 'greetings-app';
-let db
+var db, collection;
 
 //Use connect method to connect to the server
 MongoClient.connect(process.env.url, { useNewUrlParser: true}, function(err, client) {
@@ -13,6 +13,7 @@ MongoClient.connect(process.env.url, { useNewUrlParser: true}, function(err, cli
 
     // Storing a reference to the database so it can be use later
     db = client.db(dbName);
+    collection = database.collection("greetings");
     console.log(`Connected MongoDB: ${url}`);
     console.log(`Database: ${dbName}`);
     client.close();
